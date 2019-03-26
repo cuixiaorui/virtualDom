@@ -12,15 +12,18 @@ class Element{
     render(){
         const el = document.createElement(this._el)
 
+        // 赋值属性
         for(let key in this._props){
             const val = this._props[key]
             el.setAttribute(key,val);
         }
 
+        // 处理子节点
         for(let i=0,len=this._children.length; i<len; i++){
             const child = this._children[i]
 
 
+            // 元素节点
             if(child instanceof Element){
                el.appendChild(child.render());
             }else{
@@ -30,6 +33,18 @@ class Element{
             }
         }
         return el;
+    }
+
+    get children(){
+        return this._children;
+    }
+
+    get el(){
+        return this._el;
+    }
+
+    get props(){
+        return this._props;
     }
 }
 
