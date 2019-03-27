@@ -1,6 +1,6 @@
 // 1. 先用 js 对象创建虚拟 dom 对象
 
-import el from "./Element"
+import {el} from "./Element"
 import diff from "./diff.js"
 import patch from "./patch"
 
@@ -15,7 +15,9 @@ const domTree1 = {
                 el: "p",
                 props: {},
                 children: [
-                    "我是老二"
+                    el({
+                        el: "p"
+                    })
                 ]
             })]
         })

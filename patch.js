@@ -5,11 +5,16 @@ export default (root,patches)=>{
 
     const DFS = (node)=>{
         index++; 
-        console.log(`name: ${node.nodeName},index:${index}`)
-        if(patches[index]){
+        // console.log(`name: ${node.nodeName},index:${index}`)
+        const patchs = patches[index];
+
+        if(patchs && patchs.length > 0){
             // 当前节点有补丁
-            let patch = patches[index]
-            handlerPatch(patch,node)
+            let patchs = patches[index]
+            patchs.forEach(patch => {
+                handlerPatch(patch, node)
+            });
+            
         }
         const children = Array.from(node.childNodes);
         if(children){
@@ -24,10 +29,36 @@ export default (root,patches)=>{
 
 }
 
-function handlerPatch({type,val},node){
+/**
+ * 1. 节点变更
+ * 2. 节点删除、移动、替换、新增
+ * 3. 节点属性变更
+ * 4. 文本节点内容改变
+ * @param {*} param0 
+ * @param {*} node 
+ */
+
+import {isElementNode,isTextNode} from "./util"
+function handlerPatch({type,content},node){
     switch(type){
-        case "changeTextNode":
-            node.textContent = val;
+        case "REPLACE":
+            let parentElement = node.parentElement;
+            let newTagNode;
+            if(isElementNode(content)){
+                newTagNode = content.render();
+            }else{
+                newTagNode = document.createTextNode(content);
+            }
+            parentElement.replaceChild(newTagNode,node);
+            break;
+        case "REORDER":
+            console.log(`节点删除、移动、替换、新增`)
+            break;
+        case "PROPS": console.log(`属性变更`)
+            break;
+        case "TEXT":
+            node.textContent = content;
+            break;
     }
 
 }

@@ -4,8 +4,8 @@
 class Element{
     constructor({el,props,children}){
         this._el = el;
-        this._props = props;
-        this._children = children;
+        this._props = props || {};
+        this._children = children || [];
     }
 
 
@@ -54,4 +54,7 @@ function el(options){
 }
 
 
-export default el 
+export {
+    el,
+    Element
+}
