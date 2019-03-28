@@ -54,7 +54,12 @@ function handlerPatch({type,content},node){
         case "REORDER":
             console.log(`节点删除、移动、替换、新增`)
             break;
-        case "PROPS": console.log(`属性变更`)
+        case "PROPS": 
+            if(content.type === "change" || content.type === "add"){
+                node.setAttribute(content.key,content.value);
+            }else if(content.type === "remove"){
+                node.removeAttribute(content.key);
+            }
             break;
         case "TEXT":
             node.textContent = content;
